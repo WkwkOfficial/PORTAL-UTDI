@@ -1,58 +1,105 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Portal Layanan Mahasiswa — Universitas Teknologi Digital Indonesia (UTDI)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Portal web terpusat yang memudahkan mahasiswa **Universitas Teknologi Digital Indonesia (UTDI)** mengakses berbagai tautan layanan kampus secara cepat dan terstruktur. Dilengkapi dengan fitur pencarian instan, filter kategori layanan, informasi kontak bantuan resmi, serta dashboard admin untuk mengelola data layanan secara dinamis.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Halaman Publik (Mahasiswa)
+- **Direktori Layanan Terkategori:** Pengelompokan tautan berdasarkan kategori **Akademik**, **Perpustakaan**, dan **UPT Lab & Sertifikasi**.
+- **Pencarian & Filter Real-Time:** Pencarian cepat berdasarkan nama maupun deskripsi layanan tanpa memuat ulang halaman.
+- **Penanda Akun Khusus:** Label peringatan *Wajib Akun Student* untuk formulir atau layanan yang memerlukan email institusi (`@students.utdi.ac.id`).
+- **Kontak Bantuan Resmi:** Akses langsung ke layanan informasi resmi kampus melalui WhatsApp, Instagram, dan Email.
+- **Desain Responsif:** Tampilan dioptimalkan untuk perangkat Desktop, Laptop, Tablet, maupun Smartphone.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Panel Administrator
+- **Manajemen Layanan (CRUD):** Menambah, mengubah, mengurutkan, mengaktifkan/menonaktifkan, serta menghapus item layanan kampus.
+- **Manajemen Akun & Keamanan:** Fitur pembaruan kata sandi administrator secara mandiri melalui dashboard.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Teknologi yang Digunakan
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Backend:** PHP 8.x & Laravel
+- **Frontend:** Blade Templates, Tailwind CSS, Vanilla JavaScript
+- **Database:** MySQL / MariaDB / SQLite
+- **Containerization:** Docker & Docker Compose (Nginx, PHP-FPM, Supervisor)
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## Panduan Instalasi (Lokal)
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+1. **Clone repositori:**
+   ```bash
+   git clone https://github.com/WkwkOfficial/PORTAL-UTDI.git
+   cd PORTAL-UTDI
+   ```
 
-```bash
-composer require laravel/boost --dev
+2. **Install dependensi PHP & Frontend:**
+   ```bash
+   composer install
+   npm install && npm run build
+   ```
 
-php artisan boost:install
+3. **Konfigurasi file environment:**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   Sesuaikan pengaturan koneksi database (`DB_CONNECTION`, `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`) di dalam file `.env`.
+
+4. **Jalankan migrasi database dan data awal (seeder):**
+   ```bash
+   php artisan migrate --seed
+   ```
+
+5. **Jalankan server pengembangan:**
+   ```bash
+   php artisan serve
+   ```
+   Akses aplikasi melalui browser di `http://127.0.0.1:8000`.
+
+---
+
+## Menjalankan dengan Docker
+
+Pastikan Docker dan Docker Compose sudah terpasang di server atau perangkat Anda:
+
+1. **Salin dan sesuaikan file environment:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Build dan jalankan container:**
+   ```bash
+   docker compose up -d --build
+   ```
+
+3. **Jalankan migrasi di dalam container (jika pertama kali deploy):**
+   ```bash
+   docker compose exec app php artisan migrate --seed
+   ```
+
+---
+
+## Struktur Direktori Penting
+
+```text
+├── app/Http/Controllers/   # Logika halaman publik, autentikasi, dan manajemen admin
+├── database/
+│   ├── migrations/         # Skema tabel layanan dan pengguna
+│   └── seeders/            # Data awal tautan layanan UTDI & akun admin default
+├── docker/                 # Konfigurasi Nginx dan Supervisor untuk container
+├── public/                 # Aset publik & favicon
+├── resources/views/        # Tampilan Blade (home, login, dan dashboard admin)
+├── routes/web.php          # Definisi rute publik dan rute terproteksi admin
+├── Dockerfile              # Konfigurasi image aplikasi
+└── docker-compose.yml      # Orkestrasi layanan container
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Catatan Keamanan Deployment
+- Pastikan nilai `APP_ENV=production` dan `APP_DEBUG=false` diterapkan saat rilis ke server kampus.
+- Segera ubah kata sandi akun administrator bawaan setelah proses `db:seed` selesai dilakukan pada lingkungan produksi.
