@@ -1,0 +1,50 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portal-utdi-app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      APP_NAME: "Portal UTDI"
+      APP_ENV: production
+      APP_KEY: "base64:E4h9xuzLutv5vc5a9KOUaX1IljLqfbs4IcSOYPrrraw="
+      APP_DEBUG: "false"
+      APP_URL: http://localhost:8080
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: portal_utdi
+      DB_USERNAME: portal_user
+      DB_PASSWORD: portal_secret_password
+      SESSION_DRIVER: file
+      SESSION_LIFETIME: "15"
+      SESSION_EXPIRE_ON_CLOSE: "true"
+      CACHE_STORE: file
+    volumes:
+      - ./storage:/var/www/html/storage
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: portal-utdi-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: portal_utdi
+      MYSQL_USER: portal_user
+      MYSQL_PASSWORD: portal_secret_password
+      MYSQL_ROOT_PASSWORD: root_secret_password
+    volumes:
+      - portal_utdi_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  portal_utdi_mysql:
