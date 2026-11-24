@@ -25,7 +25,7 @@
         <span class="font-extrabold tracking-wide text-base">ADMIN PORTAL UTDI</span>
       </div>
       <div class="flex items-center gap-3">
-        <a href="{{ route('home') }}" target="_blank" class="rounded-lg bg-white/10 px-3 py-1.5 text-xs font-semibold hover:bg-white/20">Lihat Portal &nearr;</a>
+        <a href="{{ route('home') }}" class="rounded-lg bg-white/10 px-3 py-1.5 text-xs font-semibold hover:bg-white/20">Kembali ke Portal &nearr;</a>
         <a href="{{ route('admin.password.edit') }}" class="rounded-lg bg-white/10 px-3 py-1.5 text-xs font-semibold hover:bg-white/20
         ">
           Ganti Password
