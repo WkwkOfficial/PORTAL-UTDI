@@ -10,7 +10,7 @@ class ServiceSeeder extends Seeder
 {
     public function run(): void
     {
-       $akademik = Category::firstOrCreate(
+        $akademik = Category::firstOrCreate(
             ['name' => 'Akademik'],
             [
                 'slug' => 'akademik',
@@ -35,7 +35,21 @@ class ServiceSeeder extends Seeder
         );
 
         $services = [
-            // === AKADEMIK: Pedoman Akademik, PKL, PBL & PjBL ===
+            [
+                'category_id' => $akademik->id,
+                'card_title' => 'Pedoman Akademik, PKL, PBL & PjBL',
+                'card_subtitle' => 'Panduan kegiatan mahasiswa, pelaksanaan PKL, serta daftar dan penulisan laporan PBL/PjBL.',
+                'card_icon' => 'book-open',
+                'card_col_span' => 1,
+                'name' => 'Website Resmi Akademik UTDI',
+                'description' => 'Portal informasi layanan akademik, kalender akademik, dan pengumuman perkuliahan UTDI',
+                'keywords' => 'akademik kalender perkuliahan dan pengumuman kuliah',
+                'url' => 'https://akademik.utdi.ac.id/',
+                'link_type' => 'web',
+                'is_student_only' => false,
+                'is_active' => true,
+                'sort_order' => 0,
+            ],
             [
                 'category_id' => $akademik->id,
                 'card_title' => 'Pedoman Akademik, PKL, PBL & PjBL',
@@ -377,8 +391,8 @@ class ServiceSeeder extends Seeder
                 'is_student_only' => false,
                 'is_active' => true,
                 'sort_order' => 22,
-            ],
-            [
+                ],
+                [
                 'category_id' => $uptLab->id,
                 'card_title' => 'Layanan, Peraturan Lab & Kontak UPT',
                 'card_subtitle' => 'Tata tertib penggunaan laboratorium, formulir pengaduan layanan, serta kontak resmi UPT Lab.',
