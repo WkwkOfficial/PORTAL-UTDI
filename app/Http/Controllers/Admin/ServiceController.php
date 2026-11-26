@@ -120,6 +120,8 @@ class ServiceController extends Controller
             'link_type' => ['required', 'string', 'max:50'],
             'keywords' => ['nullable', 'string', 'max:500'],
             'sort_order' => ['nullable', 'integer'],
+            'published_at' => ['nullable', 'date'],
+            'expired_at' => ['nullable', 'date', 'after:published_at'],
         ]);
 
         $validated['is_student_only'] = $request->boolean('is_student_only');

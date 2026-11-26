@@ -135,12 +135,47 @@
           class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm" />
       </div>
 
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+        <div>
+          <label for="published_at" class="block text-xs font-bold uppercase tracking-wide text-slate-700">
+            Mulai Tayang <span class="font-normal text-slate-400">(Opsional)</span>
+          </label>
+          <input
+            type="datetime-local"
+            id="published_at"
+            name="published_at"
+            value="{{ old('published_at', isset($service) && $service->published_at ? $service->published_at->format('Y-m-d\TH:i') : '') }}"
+            class="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-800"
+          />
+          <p class="mt-1 text-[11px] text-slate-500">Kosongkan jika langsung tayang.</p>
+          @error('published_at')
+            <p class="mt-1 text-xs font-semibold text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+        <div>
+          <label for="expired_at" class="block text-xs font-bold uppercase tracking-wide text-slate-700">
+            Selesai Tayang <span class="font-normal text-slate-400">(Opsional)</span>
+          </label>
+          <input
+            type="datetime-local"
+            id="expired_at"
+            name="expired_at"
+            value="{{ old('expired_at', isset($service) && $service->expired_at ? $service->expired_at->format('Y-m-d\TH:i') : '') }}"
+            class="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-800"
+          />
+          <p class="mt-1 text-[11px] text-slate-500">Kosongkan jika tayang tanpa batas waktu.</p>
+          @error('expired_at')
+            <p class="mt-1 text-xs font-semibold text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+      </div>
+
       <div class="flex flex-wrap gap-6 pt-2">
         <label class="inline-flex items-center gap-2 text-sm font-semibold text-amber-900">
           <input type="checkbox" name="is_student_only" value="1" @checked(old('is_student_only', $service->is_student_only)) class="rounded border-slate-300 text-amber-600" />
           Tandai "Wajib Akun Student"
         </label>
-
         <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
           <input type="checkbox" name="is_active" value="1" @checked(old('is_active', $service->is_active ?? true)) class="rounded border-slate-300 text-blue-600" />
           Tampilkan di Portal (Aktif)

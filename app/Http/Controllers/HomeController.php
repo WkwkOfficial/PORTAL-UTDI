@@ -13,7 +13,7 @@ class HomeController extends Controller
     {
         $categories = Category::orderBy('id')->get();
         $services = Service::with('category')
-            ->where('is_active', true)
+            ->currentlyVisible()
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get();

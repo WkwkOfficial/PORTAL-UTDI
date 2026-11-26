@@ -118,14 +118,23 @@
                 @endif
               </td>
               <td class="px-4 py-3">
-                @if ($item->trashed())
-                  <span class="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-bold text-red-700">Terhapus</span>
-                @elseif ($item->is_active)
-                  <span class="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-800">Aktif</span>
-                @else
-                  <span class="rounded-full bg-slate-200 px-2.5 py-0.5 text-xs font-bold text-slate-600">Nonaktif</span>
-                @endif
-              </td>
+                 @if ($item->trashed())
+                 <span class="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-bold text-red-700">Terhapus</span>
+                 @elseif ($item->schedule_status === 'scheduled')
+                 <span class="rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-bold text-indigo-800">Terjadwal</span>
+                 <p class="mt-1 text-[11px] text-slate-500">Mulai {{ $item->published_at->format('d M Y H:i') }}</p>
+                 @elseif ($item->schedule_status === 'expired')
+                 <span class="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-800">Kedaluwarsa</span>
+                 <p class="mt-1 text-[11px] text-slate-500">Selesai {{ $item->expired_at->format('d M Y H:i') }}</p>
+                 @elseif ($item->is_active)
+                 <span class="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-800">Aktif</span>
+                 @if ($item->expired_at)
+                 <p class="mt-1 text-[11px] text-slate-500">s/d {{ $item->expired_at->format('d M Y H:i') }}</p>
+                 @endif
+                 @else
+                 <span class="rounded-full bg-slate-200 px-2.5 py-0.5 text-xs font-bold text-slate-600">Nonaktif</span>
+                 @endif
+                </td> 
               <td class="px-4 py-3 text-right space-x-2 whitespace-nowrap">
                 @if ($item->trashed())
                 <form method="POST" action="{{ route('admin.services.restore', $item) }}" class="inline" data-service-name="{{ $item->name }}">

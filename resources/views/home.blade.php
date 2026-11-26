@@ -286,7 +286,7 @@
               Kontak WhatsApp &amp; Email Resmi UTDI
             </h2>
             <p class="mt-1.5 max-w-2xl text-sm text-academic-100/85">
-              Mengalami kendala akses formulir, jadwal kuliah/praktikum, atau administrasi? Hubungi unit layanan resmi kampus berikut.
+              Mengalami kendala akses formulir, jadwal kuliah/praktikum, atau administrasi? <br/> Hubungi unit layanan resmi kampus berikut.
             </p>
           </div>
           <div class="rounded-xl bg-amber-400/15 px-4 py-2.5 text-xs text-amber-100 ring-1 ring-amber-300/30">
