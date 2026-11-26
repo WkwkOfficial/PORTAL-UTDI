@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FACC15'/%3E%3Cg fill='none' stroke='%23091A32' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' transform='translate(4,4)'%3E%3Cpath d='M22 10v6M2 10l10-5 10 5-10 5z'/%3E%3Cpath d='M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5'/%3E%3C/g%3E%3C/svg%3E" />
   <script>
   if (!sessionStorage.getItem('utdi_admin_tab_active')) {
     window.addEventListener('DOMContentLoaded', () => {
@@ -55,8 +54,8 @@
             placeholder="Misal: Jadwal Kuliah & Akreditasi"
             class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm" />
           <datalist id="cardTitleList">
-            @foreach ($existingCards as $card)
-              <option value="{{ $card->card_title }}">
+            @foreach ($existingCardTitles as $title)
+              <option value="{{ $title }}">
             @endforeach
           </datalist>
         </div>
@@ -64,8 +63,14 @@
 
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Subjudul Kartu (Keterangan Singkat Kelompok)</label>
-        <input type="text" name="card_subtitle" value="{{ old('card_subtitle', $service->card_subtitle) }}"
+        <input type="text" name="card_subtitle" list="cardSubtitleList" value="{{ old('card_subtitle', $service->card_subtitle) }}"
+          placeholder="Misal: Informasi jadwal perkuliahan aktif serta dokumen sertifikat akreditasi"
           class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm" />
+        <datalist id="cardSubtitleList">
+          @foreach ($existingCardSubtitles as $subtitle)
+            <option value="{{ $subtitle }}">
+          @endforeach
+        </datalist>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">

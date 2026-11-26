@@ -12,7 +12,12 @@ class ServiceController extends Controller
     public function index(Request $request)
     {
         $categories = Category::orderBy('id')->get();
+        $status = $request->input('status', 'active');
         $query = Service::with('category')->orderBy('category_id')->orderBy('sort_order')->orderBy('id');
+
+        if ($status === 'trashed') {
+            $query->onlyTrashed();
+        }
 
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
@@ -28,22 +33,29 @@ class ServiceController extends Controller
         }
 
         $services = $query->get();
+        $trashedCount = Service::onlyTrashed()->count();
 
-        return view('admin.services.index', compact('services', 'categories'));
+        return view('admin.services.index', compact('services', 'categories', 'status', 'trashedCount'));
     }
 
     public function create()
     {
         $categories = Category::orderBy('id')->get();
-        $existingCards = Service::select('category_id', 'card_title', 'card_subtitle', 'card_icon', 'card_col_span')
-            ->whereNotNull('card_title')
+        $existingCardTitles = Service::whereNotNull('card_title')
             ->distinct()
-            ->get();
+            ->orderBy('card_title')
+            ->pluck('card_title');
+        $existingCardSubtitles = Service::whereNotNull('card_subtitle')
+            ->where('card_subtitle', '!=', '')
+            ->distinct()
+            ->orderBy('card_subtitle')
+            ->pluck('card_subtitle');
 
         return view('admin.services.form', [
             'service' => new Service(['is_active' => true, 'card_col_span' => 1, 'card_icon' => 'book-open', 'link_type' => 'web']),
             'categories' => $categories,
-            'existingCards' => $existingCards,
+            'existingCardTitles' => $existingCardTitles,
+            'existingCardSubtitles' => $existingCardSubtitles,
         ]);
     }
 
@@ -58,12 +70,17 @@ class ServiceController extends Controller
     public function edit(Service $service)
     {
         $categories = Category::orderBy('id')->get();
-        $existingCards = Service::select('category_id', 'card_title', 'card_subtitle', 'card_icon', 'card_col_span')
-            ->whereNotNull('card_title')
+        $existingCardTitles = Service::whereNotNull('card_title')
             ->distinct()
-            ->get();
+            ->orderBy('card_title')
+            ->pluck('card_title');
+        $existingCardSubtitles = Service::whereNotNull('card_subtitle')
+            ->where('card_subtitle', '!=', '')
+            ->distinct()
+            ->orderBy('card_subtitle')
+            ->pluck('card_subtitle');
 
-        return view('admin.services.form', compact('service', 'categories', 'existingCards'));
+        return view('admin.services.form', compact('service', 'categories', 'existingCardTitles', 'existingCardSubtitles'));
     }
 
     public function update(Request $request, Service $service)
@@ -77,7 +94,16 @@ class ServiceController extends Controller
     public function destroy(Service $service)
     {
         $service->delete();
+
         return redirect()->route('admin.services.index')->with('success', 'Tautan layanan berhasil dihapus.');
+    }
+
+    public function restore(Service $service)
+    {
+        $service->restore();
+
+        return redirect()->route('admin.services.index', ['status' => 'trashed'])
+            ->with('success', 'Tautan layanan berhasil dipulihkan.');
     }
 
     private function validateService(Request $request): array
